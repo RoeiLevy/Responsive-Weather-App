@@ -1,0 +1,43 @@
+.app-header {
+    border-bottom: 1px solid black;
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        h1{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .settings{
+            display: flex;
+            gap: 10px;
+            .p-togglebutton {
+                border-color: #353535;
+                &:focus {
+                    box-shadow: none;
+                }
+                &.p-highlight {
+                    background-color: #353535;
+                    border-color: white;
+                }
+            }
+        }
+        .p-menuitem-link:focus{
+            box-shadow: none !important;
+        }
+    }
+}
+
+@media (max-width: 750px) {
+    .app-header {
+        .container {
+            h1{
+                font-size: 24px;
+            }
+            .p-togglebutton {
+                font-size: 12px;
+            }
+        }
+    }
+}

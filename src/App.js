@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+import './App.css'
 
-function App() {
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AppHeader } from "./cmps/AppHeader/AppHeader";
+import { Home } from "./pages/Home/Home";
+import { Favorites } from './pages/Favorites/Favorites';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
+import { setFavorites } from './store/actions/weatherActions.js'
+
+function _App(props) {
+
+  useEffect(() => {
+    props.setFavorites(JSON.parse(localStorage.getItem('favorites')) || [])
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <div className={props.isDarkMode ? "App dark" : "App"} >
+        <AppHeader />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='favorites/' element={<Favorites />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isDarkMode: state.weatherReducer.isDarkMode,
+})
+
+const mapDispatchToProps = {
+  setFavorites
+}
+export const App = connect(mapStateToProps, mapDispatchToProps)(_App)
