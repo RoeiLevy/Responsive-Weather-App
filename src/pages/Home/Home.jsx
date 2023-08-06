@@ -166,7 +166,7 @@ const _Home = (props) => {
                 <header>
                     <div className="curr-weather">
                         <aside>
-                            <p>{currCity.LocalizedName}</p>
+                            <p style={{'font-weight':'bold'}}>{currCity.LocalizedName}</p>
                             {!props.currWeather ? '' : props.isCelsius ? <p>{props.currWeather?.Temperature?.Metric?.Value + props.currWeather?.Temperature?.Metric?.Unit}&deg;</p> :
                                 <p>{props.currWeather?.Temperature?.Imperial?.Value + props.currWeather?.Temperature?.Imperial?.Unit}&deg;</p>}
                         </aside>
