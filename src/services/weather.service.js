@@ -1,8 +1,9 @@
 const API_KEY = process.env.REACT_APP_API_KEY
+const API_URL = process.env.REACT_APP_API_URL
 
 export const getLocationKeyCode = async (location) => {
   try {
-    const url = `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${location}`
+    const url = `${API_URL}/locations/v1/cities/search?apikey=${API_KEY}&q=${location}`
     return new Promise((resolve, reject) => {
       loadJSONP(url, (data) => {
         resolve(data[0].Key)
@@ -15,7 +16,7 @@ export const getLocationKeyCode = async (location) => {
 
 export const getWeatherFromGeoLocation = async (lat, lon) => {
   try {
-    const url = `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat},${lon}`
+    const url = `${API_URL}/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat},${lon}`
     return new Promise((resolve, reject) => {
       loadJSONP(url, (data) => {
         resolve(data)
@@ -28,7 +29,7 @@ export const getWeatherFromGeoLocation = async (lat, lon) => {
 
 export const getCurrentWeather = async (key, isMetric = true) => {
   try {
-    const url = `https://dataservice.accuweather.com/currentconditions/v1/${key}?apikey=${API_KEY}&metric=${isMetric}`
+    const url = `${API_URL}/currentconditions/v1/${key}?apikey=${API_KEY}&metric=${isMetric}`
     return new Promise((resolve, reject) => {
       loadJSONP(url, (data) => {
         resolve(data[0])
@@ -41,7 +42,7 @@ export const getCurrentWeather = async (key, isMetric = true) => {
 
 export const get5DayWeather = async (key, isMetric = true) => {
   try {
-    const url = `https://dataservice.accuweather.com/forecasts/v1/daily/5day/${key}?apikey=${API_KEY}&metric=${isMetric}`
+    const url = `${API_URL}/forecasts/v1/daily/5day/${key}?apikey=${API_KEY}&metric=${isMetric}`
     return new Promise((resolve, reject) => {
       loadJSONP(url, (data) => {
         resolve(data.DailyForecasts)
@@ -54,7 +55,7 @@ export const get5DayWeather = async (key, isMetric = true) => {
 
 export const getLocationCompletion = async (term) => {
   try {
-    const url = `https://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${term}`
+    const url = `${API_URL}/locations/v1/cities/autocomplete?apikey=${API_KEY}&q=${term}`
     return new Promise((resolve, reject) => {
       loadJSONP(url, (data) => {
         resolve(data)

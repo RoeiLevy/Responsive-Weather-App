@@ -14,16 +14,16 @@
         width: 400px;
     }
     main.container {
-        border: 1px solid black;
+        box-shadow: 0px 0px 10px 0px #777171bf;
         flex: 1;
-        padding: 30px;
+        padding: 10px 30px;
         margin: 30px auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
             .curr-weather {
                 display: flex;
@@ -50,8 +50,7 @@
             font-size: 25px;
         }
         > * {
-            border: 1px solid black;
-            padding: 10px;
+            box-shadow: 0px 0px 10px 0px #777171bf;
         }
         .day-forecast {
             display: flex;
@@ -71,6 +70,13 @@ body.dark {
 }
 @media (max-width: 450px) {
     .home {
+        .p-card.container {
+            header {
+                .p-toast {
+                    width: 300px;
+                }
+            }
+        }
         .five-day-forecast {
             grid-template-columns: 1fr;
             .day-forecast {

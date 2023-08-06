@@ -60,7 +60,7 @@ export const _AppHeader = ({ isDarkMode, isCelsius, setIsDarkMode, setIsCelsius 
                 <div className="container">
                     <h1 onClick={() => navigate('/')}><i className="pi pi-sun" style={{ color: '#f05514', fontSize: '2rem' }}></i>Weather</h1>
                     <div className="settings">
-                        <ToggleButton size="large" onLabel="Light mode" offLabel="Dark mode" onIcon="pi pi-sun" offIcon="pi pi-moon"
+                        <ToggleButton size="large" onLabel="" offLabel="" onIcon="pi pi-sun" offIcon="pi pi-moon"
                             checked={isDarkMode} onChange={handleChangeDarkMode} />
                         <ToggleButton size="small" onLabel="F&deg;" offLabel="C&deg;" checked={isCelsius} onChange={handleChangeIsCelsius} />
                     </div>
@@ -77,7 +77,7 @@ export const _AppHeader = ({ isDarkMode, isCelsius, setIsDarkMode, setIsCelsius 
                     <Sidebar visible={visibleRight} position="right" onHide={() => setVisibleRight(false)}>
                         <TabMenu activeIndex={activeIndex} model={items} onTabChange={(e) => setActiveIndex(e.index)} />
                         <div className="settings">
-                            <ToggleButton size="large" onLabel="Light mode" offLabel="Dark mode" onIcon="pi pi-sun" offIcon="pi pi-moon"
+                            <ToggleButton size="large" onLabel="" offLabel="" onIcon="pi pi-sun" offIcon="pi pi-moon"
                                 checked={isDarkMode} onChange={handleChangeDarkMode} />
                             <ToggleButton size="small" onLabel="C&deg;" offLabel="F&deg;" checked={isCelsius} onChange={handleChangeIsCelsius} />
                         </div>

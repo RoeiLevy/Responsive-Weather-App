@@ -71,7 +71,7 @@ const _Home = (props) => {
         }
     }
 
-    const toggleFromFavorites = (e) => {
+    const toggleFromFavorites = () => {
         setIsFavoriteBtnClicked(true);
         setTimeout(() => {
             setIsFavoriteBtnClicked(false);
@@ -79,8 +79,8 @@ const _Home = (props) => {
         const city = { name: currCity.LocalizedName, id: currCity.Key, currWeather: props.currWeather }
         const tempFavorites = props.favorites.slice()
         let isRemoved
-        if (tempFavorites.some(city => city.id === city.id)) {
-            const idx = tempFavorites.findIndex(favorite => favorite === city)
+        if (tempFavorites.some(c => c.id === city.id)) {
+            const idx = tempFavorites.findIndex(c => c.id === city.id)
             tempFavorites.splice(idx, 1)
             isRemoved = true
         } else {
@@ -172,10 +172,9 @@ const _Home = (props) => {
                         </aside>
                         {props.currWeather?.WeatherIcon ? <img src={require(`../../assets/weatherIcons/${props.currWeather.WeatherIcon}-s.png`)} alt="" /> : null}
                     </div>
-                    <i className={`pi ${props.favorites?.some(city => city.name === inputElem?.current?.value) ? 'pi-heart-fill' : 'pi-heart'} ${isFavoriteBtnClicked ? 'heart-icon' : ''}`}
-                        style={{ fontSize: '2rem' }} onClick={toggleFromFavorites} />
-                    <Toast ref={toast} position="bottom-right" />
-
+                    {props.currWeather ? <i className={`pi ${props.favorites?.some(city => city.name === currCity.LocalizedName) ? 'pi-heart-fill' : 'pi-heart'} ${isFavoriteBtnClicked ? 'heart-icon' : ''}`}
+                        style={{ fontSize: '2rem' }} onClick={toggleFromFavorites} /> : ''}
+                    <Toast ref={toast} position="bottom-center" />
                 </header>
                 <div className="five-day-forecast">
                     {(props.dailyForecasts?.length && props.dailyForecasts.map(dailyForecast => (
