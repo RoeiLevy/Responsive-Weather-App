@@ -94,6 +94,7 @@ const _Home = (props) => {
 
     const handleSearch = async (value) => {
         try {
+            if(!value) return
             const res = await getLocationCompletion(value)
             setCities(res.map(city => ({
                 label: city.LocalizedName,
@@ -108,7 +109,7 @@ const _Home = (props) => {
 
     const handleChange = useCallback(debounce(handleSearch, 500), []); // Using debounce to minimize API calls count 
 
-    useEffect(() => { // Reload 5 day forecast when the degree settings is changed
+    useEffect(() => { // Reload 5 day forecast when the degree setting is changed
         (async function myFunc() {
             if (!isFirstRender.current) {
                 const currWeather = await getCurrentWeather(currCity.Key, props.isCelsius)
