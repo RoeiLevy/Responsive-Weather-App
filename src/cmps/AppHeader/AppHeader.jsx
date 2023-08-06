@@ -45,6 +45,7 @@ export const _AppHeader = ({ isDarkMode, isCelsius, setIsDarkMode, setIsCelsius 
     }, [location.pathname]);
 
     useEffect(() => {
+        (window.innerWidth < 750) ? setIsMobile(true) : setIsMobile(false)
         const handleResize = () => {
             (window.innerWidth < 750) ? setIsMobile(true) : setIsMobile(false)
         }

@@ -63,7 +63,7 @@
     }
 }
 body.dark {
-    .menu{
+    .menu {
         .p-menuitem-link {
             background-color: white !important;
         }
@@ -83,6 +83,14 @@ body.dark {
                     width: 50px;
                 }
             }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .home {
+        .p-inputtext {
+            width: 70vw;
         }
     }
 }
