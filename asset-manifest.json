@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Roei-Levy-3-8-2023/static/css/main.7518e751.css",
+    "main.js": "/Roei-Levy-3-8-2023/static/js/main.f3786fb8.js",
+    "static/js/787.09fa0125.chunk.js": "/Roei-Levy-3-8-2023/static/js/787.09fa0125.chunk.js",
+    "static/media/primeicons.svg": "/Roei-Levy-3-8-2023/static/media/primeicons.e1441b135b3ca9ad643c.svg",
+    "static/media/primeicons.eot": "/Roei-Levy-3-8-2023/static/media/primeicons.d44157bdfa026dc877af.eot",
+    "static/media/primeicons.woff": "/Roei-Levy-3-8-2023/static/media/primeicons.10d3152104f2208ac82a.woff",
+    "static/media/primeicons.ttf": "/Roei-Levy-3-8-2023/static/media/primeicons.ea5358601d0a3fd6670b.ttf",
+    "static/media/primeicons.woff2": "/Roei-Levy-3-8-2023/static/media/primeicons.78172950b335ccdb94e2.woff2",
+    "static/media/color.png": "/Roei-Levy-3-8-2023/static/media/color.6441e63a57ccc5105bad.png",
+    "static/media/17-s.png": "/Roei-Levy-3-8-2023/static/media/17-s.4b8d4543699af9743509.png",
+    "static/media/41-s.png": "/Roei-Levy-3-8-2023/static/media/41-s.da8960711b2a7bdd80c0.png",
+    "static/media/16-s.png": "/Roei-Levy-3-8-2023/static/media/16-s.02f6796a4b217cbdd262.png",
+    "static/media/15-s.png": "/Roei-Levy-3-8-2023/static/media/15-s.9aac7942a26db293440b.png",
+    "index.html": "/Roei-Levy-3-8-2023/index.html",
+    "main.7518e751.css.map": "/Roei-Levy-3-8-2023/static/css/main.7518e751.css.map",
+    "main.f3786fb8.js.map": "/Roei-Levy-3-8-2023/static/js/main.f3786fb8.js.map",
+    "787.09fa0125.chunk.js.map": "/Roei-Levy-3-8-2023/static/js/787.09fa0125.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7518e751.css",
+    "static/js/main.f3786fb8.js"
+  ]
+}
