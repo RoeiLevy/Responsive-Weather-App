@@ -4,12 +4,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        h1{
+        h1 {
             display: flex;
             align-items: center;
             cursor: pointer;
         }
-        .settings{
+        .settings {
             display: flex;
             gap: 10px;
             .p-togglebutton {
@@ -23,16 +23,24 @@
                 }
             }
         }
-        .p-menuitem-link:focus{
+        .p-menuitem-link:focus {
             box-shadow: none !important;
         }
+    }
+}
+body.dark {
+    .p-sidebar {
+        background-color: #353535 !important;
+    }
+    .p-menuitem-link {
+        border: none !important;
     }
 }
 
 @media (max-width: 750px) {
     .app-header {
         .container {
-            h1{
+            h1 {
                 font-size: 24px;
             }
             .p-togglebutton {

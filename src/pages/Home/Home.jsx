@@ -12,9 +12,11 @@ import './Home.scss'
 const _Home = (props) => {
     const [cities, setCities] = useState([])
     const [isFavoriteBtnClicked, setIsFavoriteBtnClicked] = useState(false);
+    const [currCity, setCurrCity] = useState({})
     const inputElem = useRef(null);
     const location = useLocation();
     const toast = useRef(null);
+    const isFirstRender = useRef(true);
 
     const show = (severity, summary, detail, life = 3000) => {
         toast.current.show({ severity, summary, detail, life });
@@ -37,20 +39,21 @@ const _Home = (props) => {
 
     const getWeather = async ({ Key, LocalizedName }) => {
         try {
-            if (localStorage.getItem('cachedWeather')) {
-                const cachedWeather = JSON.parse(localStorage.getItem('cachedWeather'))
-                if (cachedWeather[Key]) {
-                    props.setCurrWeather(cachedWeather[Key].currWeather)
-                    props.setDailyForecasts(cachedWeather[Key].dailyForecasts)
-                }
+            const cachedWeather = JSON.parse(localStorage.getItem('cachedWeather') || '{}')
+            console.log("TCL: getWeather -> cachedWeather", cachedWeather[Key])
+            if (cachedWeather[Key]) {
+                props.setCurrWeather(cachedWeather[Key].currWeather)
+                props.setDailyForecasts(cachedWeather[Key].dailyForecasts)
             } else {
                 const currWeather = await getCurrentWeather(Key, props.isCelsius)
                 const dailyForecasts = await get5DayWeather(Key, props.isCelsius)
-                localStorage.setItem('cachedWeather', JSON.stringify({ [Key]: { currWeather, dailyForecasts } }))
+                cachedWeather[Key] = { currWeather, dailyForecasts }
+                localStorage.setItem('cachedWeather', JSON.stringify(cachedWeather))
                 props.setCurrWeather(currWeather)
                 props.setDailyForecasts(dailyForecasts)
             }
             inputElem.current.value = LocalizedName
+            setCurrCity({ Key, LocalizedName })
             setCities([])
         } catch (error) {
             show('error', 'Error', error)
@@ -58,25 +61,10 @@ const _Home = (props) => {
     }
 
     const getWeatherLatLon = async ({ coords }) => {
-        const { latitude, longitude } = coords
-        const key = latitude + ',' + longitude
         try {
-            if (localStorage.getItem('cachedWeather')) {
-                const cachedWeather = JSON.parse(localStorage.getItem('cachedWeather'))
-                if (cachedWeather[key]) {
-                    // props.setCurrWeather(cachedWeather[key].currWeather)
-                    // props.setDailyForecasts(cachedWeather[key].dailyForecasts)
-                }
-            } else {
-                const weather = await getWeatherFromGeoLocation(latitude, longitude)
-                // const currWeather = await getCurrentWeather(Key, props.isCelsius)
-                // const dailyForecasts = await get5DayWeather(Key, props.isCelsius)
-                // localStorage.setItem('cachedWeather', JSON.stringify({ [Key]: { currWeather, dailyForecasts } }))
-                // props.setCurrWeather(currWeather)
-                // props.setDailyForecasts(dailyForecasts)
-            }
-            // inputElem.current.value = LocalizedName
-            // setCities([])
+            const { latitude, longitude } = coords
+            const { Key, LocalizedName } = await getWeatherFromGeoLocation(latitude, longitude)
+            getWeather({ Key, LocalizedName })
         } catch (error) {
             show('error', 'Error', error)
         }
@@ -124,22 +112,35 @@ const _Home = (props) => {
     const handleChange = useCallback(debounce(handleSearch, 500), []);
 
     useEffect(() => {
-        // if ('geolocation' in navigator) {
-        //     navigator.geolocation.getCurrentPosition(
-        //         (position) => {
-        //             getWeatherLatLon(position)
-        //         },
-        //         (error) => {
-        //             show('error', 'Error', error.message)
-        //         }
-        //     );
-        // } else {
-        //     console.log('Geolocation is not supported in this browser.');
-        // }
+        (async function myFunc() {
+            if (!isFirstRender.current) {
+                const currWeather = await getCurrentWeather(currCity.Key, props.isCelsius)
+                const dailyForecasts = await get5DayWeather(currCity.Key, props.isCelsius)
+                localStorage.setItem('cachedWeather', JSON.stringify({ [currCity.Key]: { currWeather, dailyForecasts } }))
+                props.setCurrWeather(currWeather)
+                props.setDailyForecasts(dailyForecasts)
+            } else {
+                isFirstRender.current = false;
+            }
+        })()
+    }, [props.isCelsius]);
 
+    useEffect(() => {
         const LocalizedName = new URLSearchParams(location.search).get('q');
         const Key = new URLSearchParams(location.search).get('key');
-        (LocalizedName && Key) ? getWeather({ Key, LocalizedName }) : getDefaultWeather()
+        if (LocalizedName && Key) {
+            getWeather({ Key, LocalizedName })
+        } else if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    getWeatherLatLon(position)
+                },
+                (error) => {
+                    getDefaultWeather()
+                }
+            );
+        } else {
+        }
         props.setFavorites(JSON.parse(localStorage.getItem('favorites')) || [])
     }, []);
 
@@ -156,8 +157,8 @@ const _Home = (props) => {
                 <header>
                     <div className="curr-weather">
                         <aside>
-                            <p>{inputElem?.current?.value}</p>
-                            {props.isCelsius ? <p>{props.currWeather?.Temperature?.Metric?.Value + props.currWeather?.Temperature?.Metric?.Unit}&deg;</p> :
+                            <p>{currCity.LocalizedName}</p>
+                            {!props.currWeather ? '' : props.isCelsius ? <p>{props.currWeather?.Temperature?.Metric?.Value + props.currWeather?.Temperature?.Metric?.Unit}&deg;</p> :
                                 <p>{props.currWeather?.Temperature?.Imperial?.Value + props.currWeather?.Temperature?.Imperial?.Unit}&deg;</p>}
                         </aside>
                         {props.currWeather?.WeatherIcon ? <img src={require(`../../assets/weatherIcons/${props.currWeather.WeatherIcon}-s.png`)} alt="" /> : null}

@@ -62,6 +62,13 @@
         }
     }
 }
+body.dark {
+    .menu{
+        .p-menuitem-link {
+            background-color: white !important;
+        }
+    }
+}
 @media (max-width: 450px) {
     .home {
         .five-day-forecast {

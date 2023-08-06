@@ -32,6 +32,7 @@ export const _AppHeader = ({ isDarkMode, isCelsius, setIsDarkMode, setIsCelsius 
     ];
 
     const handleChangeDarkMode = (e) => {
+        document.body.classList.toggle('dark')
         setIsDarkMode(e.value)
     }
 
@@ -68,7 +69,7 @@ export const _AppHeader = ({ isDarkMode, isCelsius, setIsDarkMode, setIsCelsius 
         )
     } else {
         return (
-            <header className="app-header">
+            <header className={`app-header ${isDarkMode ? 'dark' : ''}`}>
                 <div className="container">
                     <h1 onClick={() => navigate('/')}><i className="pi pi-sun" style={{ color: '#f05514', fontSize: '2rem' }}></i>Weather</h1>
                     <Button icon="pi pi-align-justify" onClick={() => setVisibleRight(true)} />
