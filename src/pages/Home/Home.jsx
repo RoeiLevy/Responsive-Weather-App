@@ -13,8 +13,10 @@ const _Home = (props) => {
     const [cities, setCities] = useState([])
     const [isFavoriteBtnClicked, setIsFavoriteBtnClicked] = useState(false);
     const [currCity, setCurrCity] = useState({})
-    const inputElem = useRef(null);
+    const [isFocusOnInput, setIsFocusOnInput] = useState(false)
+
     const location = useLocation();
+    const inputElem = useRef(null);
     const toast = useRef(null);
     const isFirstRender = useRef(true);
 
@@ -37,10 +39,19 @@ const _Home = (props) => {
         }
     }
 
+    const getWeatherLatLon = async ({ coords }) => {
+        try {
+            const { latitude, longitude } = coords
+            const { Key, LocalizedName } = await getWeatherFromGeoLocation(latitude, longitude)
+            getWeather({ Key, LocalizedName })
+        } catch (error) {
+            show('error', 'Error', error)
+        }
+    }
+
     const getWeather = async ({ Key, LocalizedName }) => {
         try {
             const cachedWeather = JSON.parse(localStorage.getItem('cachedWeather') || '{}')
-            console.log("TCL: getWeather -> cachedWeather", cachedWeather[Key])
             if (cachedWeather[Key]) {
                 props.setCurrWeather(cachedWeather[Key].currWeather)
                 props.setDailyForecasts(cachedWeather[Key].dailyForecasts)
@@ -60,34 +71,20 @@ const _Home = (props) => {
         }
     }
 
-    const getWeatherLatLon = async ({ coords }) => {
-        try {
-            const { latitude, longitude } = coords
-            const { Key, LocalizedName } = await getWeatherFromGeoLocation(latitude, longitude)
-            getWeather({ Key, LocalizedName })
-        } catch (error) {
-            show('error', 'Error', error)
-        }
-    }
-
     const toggleFromFavorites = (e) => {
         setIsFavoriteBtnClicked(true);
         setTimeout(() => {
             setIsFavoriteBtnClicked(false);
-        }, 700);
-        const url = props.currWeather.Link
-        const regex = /\/(\d+)\//;
-        const match = url.match(regex);
-        const id = match[1];
-        const currCity = { name: inputElem.current.value, id, currWeather: props.currWeather }
+        }, 700); // For animation purposes
+        const city = { name: currCity.LocalizedName, id: currCity.Key, currWeather: props.currWeather }
         const tempFavorites = props.favorites.slice()
         let isRemoved
-        if (tempFavorites.some(city => city.id === currCity.id)) {
-            const idx = tempFavorites.findIndex(favorite => favorite === currCity)
+        if (tempFavorites.some(city => city.id === city.id)) {
+            const idx = tempFavorites.findIndex(favorite => favorite === city)
             tempFavorites.splice(idx, 1)
             isRemoved = true
         } else {
-            tempFavorites.push(currCity)
+            tempFavorites.push(city)
             isRemoved = false
         }
         localStorage.setItem('favorites', JSON.stringify(tempFavorites))
@@ -109,9 +106,9 @@ const _Home = (props) => {
         }
     }
 
-    const handleChange = useCallback(debounce(handleSearch, 500), []);
+    const handleChange = useCallback(debounce(handleSearch, 500), []); // Using debounce to minimize API calls count 
 
-    useEffect(() => {
+    useEffect(() => { // Reload 5 day forecast when the degree settings is changed
         (async function myFunc() {
             if (!isFirstRender.current) {
                 const currWeather = await getCurrentWeather(currCity.Key, props.isCelsius)
@@ -126,6 +123,9 @@ const _Home = (props) => {
     }, [props.isCelsius]);
 
     useEffect(() => {
+        // First get weather if we have query params ( Which means we just navigated from favorites page)
+        // If not then try GEO location
+        // If user denied or browser is incompatible get default Tel Aviv weather
         const LocalizedName = new URLSearchParams(location.search).get('q');
         const Key = new URLSearchParams(location.search).get('key');
         if (LocalizedName && Key) {
@@ -140,8 +140,17 @@ const _Home = (props) => {
                 }
             );
         } else {
+            getDefaultWeather()
         }
         props.setFavorites(JSON.parse(localStorage.getItem('favorites')) || [])
+
+        window.addEventListener('click', (e) => {
+            if (e.target.className.includes("p-inputtext") || e.target.className.includes("p-menuitem-link")) {
+                setIsFocusOnInput(true)
+            } else {
+                setIsFocusOnInput(false)
+            }
+        })
     }, []);
 
     return (
@@ -150,7 +159,7 @@ const _Home = (props) => {
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText placeholder="Search" ref={inputElem} onChange={() => handleChange(inputElem.current?.value)} onFocus={(e) => e.target.select()} />
-                    {cities.length ? <Menu className="menu" model={cities} /> : null}
+                    {(cities.length && isFocusOnInput) ? <Menu className="menu" model={cities} /> : null}
                 </span>
             </div>
             <main className='container'>
@@ -165,11 +174,11 @@ const _Home = (props) => {
                     </div>
                     <i className={`pi ${props.favorites?.some(city => city.name === inputElem?.current?.value) ? 'pi-heart-fill' : 'pi-heart'} ${isFavoriteBtnClicked ? 'heart-icon' : ''}`}
                         style={{ fontSize: '2rem' }} onClick={toggleFromFavorites} />
-                    <Toast ref={toast} />
+                    <Toast ref={toast} position="bottom-right" />
 
                 </header>
                 <div className="five-day-forecast">
-                    {props.dailyForecasts?.length && props.dailyForecasts.map(dailyForecast => (
+                    {(props.dailyForecasts?.length && props.dailyForecasts.map(dailyForecast => (
                         <div className='day-forecast' key={dailyForecast.EpochDate}>
                             <h3>{new Date(dailyForecast.EpochDate * 1000).toDateString().slice(0, -5)}</h3>
                             <div className='imgs'>
@@ -177,7 +186,7 @@ const _Home = (props) => {
                             </div>
                             {dailyForecast.Temperature.Maximum.Value + dailyForecast.Temperature.Maximum.Unit}&deg;/{dailyForecast.Temperature.Minimum.Value + dailyForecast.Temperature.Minimum.Unit}&deg;
                         </div>
-                    ))}
+                    ))) || ''}
                 </div>
             </main>
         </div>

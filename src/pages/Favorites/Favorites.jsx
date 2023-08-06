@@ -10,7 +10,7 @@ const _Favorites = ({ favorites, isCelsius }) => {
             <h3>Favorites Cities</h3>
             <hr />
             <div className="list">
-                {favorites?.length && favorites.map(favorite => (
+                {(favorites?.length && favorites.map(favorite => (
                     <div className="favorite" key={favorite.id} onClick={() => navigate(`/?q=${favorite.name}&key=${favorite.id}`)}>
                         <h3>{favorite.name}</h3>
                         <div className='imgs'>
@@ -18,7 +18,7 @@ const _Favorites = ({ favorites, isCelsius }) => {
                         </div>
                         {isCelsius ? favorite.currWeather.Temperature.Metric.Value + 'C' : favorite.currWeather.Temperature.Imperial.Value + 'F'}&deg;
                     </div>
-                ))}
+                ))) || ''}
             </div>
         </div>
     )
