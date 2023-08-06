@@ -20,7 +20,8 @@
         margin: 30px auto;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-around;
+        gap: 20px;
         header {
             display: flex;
             justify-content: space-around;
@@ -39,8 +40,9 @@
     }
     .five-day-forecast {
         display: grid;
-        gap: 10px;
+        gap: 20px;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        flex: 1;
         h3 {
             margin: 0;
             margin-bottom: 5px;
@@ -57,7 +59,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-around;
-            height: 200px;
         }
     }
 }
@@ -82,7 +83,6 @@ body.dark {
             .day-forecast {
                 height: 100px;
                 flex-direction: row !important;
-                padding: 15px;
                 h3 {
                     font-size: 14px;
                 }
@@ -94,10 +94,15 @@ body.dark {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
     .home {
         .p-inputtext {
             width: 70vw;
+        }
+        .five-day-forecast {
+            .day-forecast {
+                padding: 15px;
+            }
         }
     }
 }
