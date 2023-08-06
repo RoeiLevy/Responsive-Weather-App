@@ -4,7 +4,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import './App.css'
 
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, HashRouter } from "react-router-dom";
 import { AppHeader } from "./cmps/AppHeader/AppHeader";
 import { Home } from "./pages/Home/Home";
 import { Favorites } from './pages/Favorites/Favorites';
@@ -19,7 +19,7 @@ function _App(props) {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className={props.isDarkMode ? "App dark" : "App"} >
         <AppHeader />
         <Routes>
@@ -27,7 +27,7 @@ function _App(props) {
           <Route path='favorites/' element={<Favorites />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
