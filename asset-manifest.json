@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Roei-Levy-3-8-2023/static/css/main.7518e751.css",
-    "main.js": "/Roei-Levy-3-8-2023/static/js/main.26983d3d.js",
+    "main.js": "/Roei-Levy-3-8-2023/static/js/main.1c69b194.js",
     "static/js/787.09fa0125.chunk.js": "/Roei-Levy-3-8-2023/static/js/787.09fa0125.chunk.js",
     "static/media/primeicons.svg": "/Roei-Levy-3-8-2023/static/media/primeicons.e1441b135b3ca9ad643c.svg",
     "static/media/primeicons.eot": "/Roei-Levy-3-8-2023/static/media/primeicons.d44157bdfa026dc877af.eot",
@@ -15,11 +15,11 @@
     "static/media/15-s.png": "/Roei-Levy-3-8-2023/static/media/15-s.9aac7942a26db293440b.png",
     "index.html": "/Roei-Levy-3-8-2023/index.html",
     "main.7518e751.css.map": "/Roei-Levy-3-8-2023/static/css/main.7518e751.css.map",
-    "main.26983d3d.js.map": "/Roei-Levy-3-8-2023/static/js/main.26983d3d.js.map",
+    "main.1c69b194.js.map": "/Roei-Levy-3-8-2023/static/js/main.1c69b194.js.map",
     "787.09fa0125.chunk.js.map": "/Roei-Levy-3-8-2023/static/js/787.09fa0125.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7518e751.css",
-    "static/js/main.26983d3d.js"
+    "static/js/main.1c69b194.js"
   ]
 }
