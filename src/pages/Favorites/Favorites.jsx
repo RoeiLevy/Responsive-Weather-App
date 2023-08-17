@@ -2,16 +2,17 @@ import { connect } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import './Favorites.scss'
 
-const _Favorites = ({ favorites, isCelsius }) => {
+export const _Favorites = ({ favorites, isCelsius, onSelectFavorite }) => {
     const navigate = useNavigate();
 
     return (
-        <div className="favorites container">
+        <div data-testid="favorites-container" className="favorites container">
             <h3>Favorites Cities</h3>
             <hr />
             <div className="list">
                 {(favorites?.length && favorites.map(favorite => (
-                    <div className="favorite" key={favorite.id} onClick={() => navigate(`/?q=${favorite.name}&key=${favorite.id}`)}>
+                    <div data-testid="favorite" className="favorite" key={favorite.id} onClick={() => { navigate('/'); onSelectFavorite(favorite) }}>
+                        {/* <div className="favorite" key={favorite.id} onClick={() => navigate(`/?q=${favorite.name}&key=${favorite.id}`)}> */}
                         <h3>{favorite.name}</h3>
                         <div className='imgs'>
                             <img src={require(`../../assets/weatherIcons/${favorite.currWeather.WeatherIcon}-s.png`)} alt="" />

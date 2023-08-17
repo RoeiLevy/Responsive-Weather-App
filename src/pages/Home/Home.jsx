@@ -94,7 +94,7 @@ const _Home = (props) => {
 
     const handleSearch = async (value) => {
         try {
-            if(!value) return
+            if (!value) return
             const res = await getLocationCompletion(value)
             setCities(res.map(city => ({
                 label: city.LocalizedName,
@@ -127,11 +127,15 @@ const _Home = (props) => {
         // First get weather if we have query params ( Which means we just navigated from favorites page)
         // If not then try GEO location
         // If user denied or browser is incompatible get default Tel Aviv weather
-        const LocalizedName = new URLSearchParams(location.search).get('q');
-        const Key = new URLSearchParams(location.search).get('key');
-        if (LocalizedName && Key) {
-            getWeather({ Key, LocalizedName })
-        } else if ('geolocation' in navigator) {
+        // const LocalizedName = new URLSearchParams(location.search).get('q');
+        // const Key = new URLSearchParams(location.search).get('key');
+        // if (LocalizedName && Key) {
+        //     getWeather({ Key, LocalizedName })
+        // } 
+        if (props.selectedFavorite) {
+            getWeather({ Key: props.selectedFavorite.id, LocalizedName: props.selectedFavorite.name })
+        }
+        else if ('geolocation' in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     getWeatherLatLon(position)
@@ -145,7 +149,7 @@ const _Home = (props) => {
         }
         props.setFavorites(JSON.parse(localStorage.getItem('favorites')) || [])
 
-        window.addEventListener('click', (e) => {
+        window.addEventListener('click', (e) => { // In order to close the search menu
             if (e.target.className.includes("p-inputtext") || e.target.className.includes("p-menuitem-link")) {
                 setIsFocusOnInput(true)
             } else {
@@ -156,7 +160,7 @@ const _Home = (props) => {
 
     return (
         <div className="home ">
-            <div className="search container">
+            <div data-testid="search-container" className="search container">
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText placeholder="Search" ref={inputElem} onChange={() => handleChange(inputElem.current?.value)} onFocus={(e) => e.target.select()} />
@@ -165,7 +169,7 @@ const _Home = (props) => {
             </div>
             <main className='container'>
                 <header>
-                    <div className="curr-weather">
+                    <div data-testid="curr-weather" className="curr-weather">
                         <aside>
                             <p>{currCity.LocalizedName}</p>
                             {!props.currWeather ? '' : props.isCelsius ? <p>{props.currWeather?.Temperature?.Metric?.Value + props.currWeather?.Temperature?.Metric?.Unit}&deg;</p> :
@@ -173,7 +177,7 @@ const _Home = (props) => {
                         </aside>
                         {props.currWeather?.WeatherIcon ? <img src={require(`../../assets/weatherIcons/${props.currWeather.WeatherIcon}-s.png`)} alt="" /> : null}
                     </div>
-                    {props.currWeather ? <i className={`pi ${props.favorites?.some(city => city.name === currCity.LocalizedName) ? 'pi-heart-fill' : 'pi-heart'} ${isFavoriteBtnClicked ? 'heart-icon' : ''}`}
+                    {props.currWeather ? <i data-testid="favorite-icon" className={`pi ${props.favorites?.some(city => city.name === currCity.LocalizedName) ? 'pi-heart-fill' : 'pi-heart'} ${isFavoriteBtnClicked ? 'heart-icon' : ''}`}
                         style={{ fontSize: '2rem' }} onClick={toggleFromFavorites} /> : ''}
                     <Toast ref={toast} position="bottom-center" />
                 </header>

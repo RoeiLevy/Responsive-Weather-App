@@ -9,22 +9,22 @@ import { AppHeader } from "./cmps/AppHeader/AppHeader";
 import { Home } from "./pages/Home/Home";
 import { Favorites } from './pages/Favorites/Favorites';
 import { connect } from 'react-redux';
-import { useEffect } from 'react';
-import { setFavorites } from './store/actions/weatherActions.js'
+import { useState } from 'react';
 
 function _App(props) {
+  const [selectedFavorite, setSelectedFavorite] = useState(null)
 
-  useEffect(() => {
-    props.setFavorites(JSON.parse(localStorage.getItem('favorites')) || [])
-  }, []);
+  const handleSelectFavorite = (favorite) => {
+    setSelectedFavorite(favorite)
+  }
 
   return (
     <HashRouter>
-      <div className={props.isDarkMode ? "App dark" : "App"} >
+      <div data-testid="div" className={props.isDarkMode ? "App dark" : "App"} >
         <AppHeader />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='favorites/' element={<Favorites />} />
+          <Route path='/' element={<Home selectedFavorite={selectedFavorite} />} />
+          <Route path='favorites/' element={<Favorites onSelectFavorite={handleSelectFavorite} />} />
         </Routes>
       </div>
     </HashRouter>
@@ -35,7 +35,5 @@ const mapStateToProps = state => ({
   isDarkMode: state.weatherReducer.isDarkMode,
 })
 
-const mapDispatchToProps = {
-  setFavorites
-}
+const mapDispatchToProps = {}
 export const App = connect(mapStateToProps, mapDispatchToProps)(_App)
