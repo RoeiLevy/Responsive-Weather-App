@@ -1,7 +1,7 @@
 {
   "name": "abra-weather-app",
   "version": "0.1.0",
-  "homepage": "https://roeilevy.github.io/Roei-Levy-3-8-2023",
+  "homepage": "https://roeilevy.github.io/Responsive-Weather-App",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
